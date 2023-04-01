@@ -288,6 +288,7 @@
     <Content Include="Images_Data\User_Avatars\45172002.jpg" />
     <Content Include="Images_Data\User_Avatars\69e1c518-0a30-4d3b-8c2d-6015801231ea.Jpeg" />
     <Content Include="Images_Data\User_Avatars\89ca9b58-9e3d-4c21-bb08-369f8f04b2fb.Jpeg" />
+    <Content Include="Images_Data\User_Avatars\ca741c88-5485-452d-825b-517235ddf4de.Jpeg" />
     <Content Include="Images_Data\User_Avatars\no_avatar.png" />
     <Content Include="info-icon.png" />
     <Content Include="Scripts\bootbox.js" />
