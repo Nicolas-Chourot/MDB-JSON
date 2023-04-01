@@ -15,6 +15,10 @@ namespace MDB.Models
             UserTypeId = 3;
             CreationDate = DateTime.Now;
         }
+        public User Clone()
+        {
+            return JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(this));
+        }
         #region Data Members
         public int Id { get; set; }
         public int UserTypeId { get; set; }
@@ -106,9 +110,5 @@ namespace MDB.Models
             return FirstName + " " + LastName;
         }
         #endregion
-        public User Clone()
-        {
-            return JsonConvert.DeserializeObject<User>(JsonConvert.SerializeObject(this));
-        }
     }
 }
