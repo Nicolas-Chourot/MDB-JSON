@@ -14,7 +14,7 @@
   },
   {
     "Id": 2,
-    "UserTypeId": 2,
+    "UserTypeId": 3,
     "Verified": true,
     "Blocked": false,
     "FirstName": "Saliha",
@@ -27,7 +27,7 @@
   },
   {
     "Id": 3,
-    "UserTypeId": 1,
+    "UserTypeId": 3,
     "Verified": true,
     "Blocked": false,
     "FirstName": "Nicolas",
@@ -35,7 +35,7 @@
     "GenderId": 1,
     "Email": "Nicolas.Chourot@clg.qc.ca",
     "Avatar": "69e1c518-0a30-4d3b-8c2d-6015801231ea",
-    "Password": "password",
+    "Password": "Cegep_2023",
     "CreationDate": "2023-03-23T13:12:50"
   },
   {
@@ -50,5 +50,18 @@
     "Avatar": "89ca9b58-9e3d-4c21-bb08-369f8f04b2fb",
     "Password": "password",
     "CreationDate": "2023-03-19T12:00:00"
+  },
+  {
+    "Id": 5,
+    "UserTypeId": 3,
+    "Verified": true,
+    "Blocked": false,
+    "FirstName": "Nicolas",
+    "LastName": "Chourot",
+    "GenderId": 1,
+    "Email": "Nicolas.Chourot@yopmail.com",
+    "Avatar": "ca741c88-5485-452d-825b-517235ddf4de",
+    "Password": "Cegep_2023",
+    "CreationDate": "2023-04-01T18:06:33.5918653-04:00"
   }
 ]
