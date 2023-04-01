@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MDB.Models.Login>
+@{
+    int currentDay = 0;
+    var loggedUsersId = (List<int>)ViewBag.LoggedUsersId;
+
+    foreach (var login in Model)
+    {
+        if (login.LoginDate.Day != currentDay)
+        {
+            currentDay = login.LoginDate.Day; ///  /DeleteJournalDay?day=2022-03-24 DateTime dayToDelete = DateTime.Parse(day)
+            object param = new { day = login.LoginDate.ToShortDateString().Trim() };
+            <hr />
+            <div style="display:grid; grid-template-columns:80px 30px; align-items:center">
+                @login.LoginDate.ToShortDateString()
+                @Helper.IconConfirmCmdWithParam("Accounts", "DeleteJournalDay", param,"fa-times-rectangle-o", "Effacer la journée du " + login.LoginDate.ToShortDateString())
+            </div>
+            <hr />
+        }
+        <div class="loginJournalLayout">
+            <div>
+                @Helper.AvatarUser(login.User, "UserSmallAvatar")
+            </div>
+            <div>
+                @login.LoginDate.ToShortTimeString()
+            </div>
+
+            @if (login.LoginDate != login.LogoutDate)
+            {
+                <div>&nbsp;:&nbsp;@login.LogoutDate.ToShortTimeString()</div>
+            }
+            else
+            {
+                if (loggedUsersId.Contains(login.User.Id))
+                {
+                    loggedUsersId.Remove(login.User.Id);
+                    <div title="Est en ligne en ce moment">&nbsp;:&nbsp; @Helper.OnLineStatusIcon(true, false)</div>
+                }
+                else
+                {
+                    <div title="Session expirée">&nbsp;:&nbsp; @Helper.TimeOutIcon()</div>
+                }
+            }
+        </div>
+    }
+}
