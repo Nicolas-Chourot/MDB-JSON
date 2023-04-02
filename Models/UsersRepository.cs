@@ -245,7 +245,6 @@ namespace MDB.Models
             }
             return false;
         }
-
         public static String GetClientIPAddress()
         {
             String ip = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
@@ -264,7 +263,7 @@ namespace MDB.Models
                 Login login = new Login();
                 login.LoginDate = login.LogoutDate = DateTime.Now;
                 login.UserId = userId;
-                login.IpAddress = "144.172.187.215"; // GetClientIPAddress();
+                login.IpAddress = GetClientIPAddress();
                 if (login.IpAddress != "::1")
                 {
                     GeoLocation gl = GeoLocation.Call(login.IpAddress);
