@@ -245,17 +245,6 @@ namespace MDB.Models
             }
             return false;
         }
-        public static String GetClientIPAddress()
-        {
-            String ip = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-
-            if (string.IsNullOrEmpty(ip))
-                ip = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
-            else
-                ip = ip.Split(',')[0];
-
-            return ip;
-        }
         public Login AddLogin(int userId)
         {
             try
@@ -263,7 +252,7 @@ namespace MDB.Models
                 Login login = new Login();
                 login.LoginDate = login.LogoutDate = DateTime.Now;
                 login.UserId = userId;
-                login.IpAddress = GetClientIPAddress();
+                login.IpAddress = HttpContext.Current.Request.UserHostAddress;
                 if (login.IpAddress != "::1")
                 {
                     GeoLocation gl = GeoLocation.Call(login.IpAddress);
