@@ -23,6 +23,7 @@
             $(this).val(r);
         } catch (e) { }
     });
+
     $(".countrySelect").change((e) => {
         $(e.target).next().attr("src", "/Images_Data/Loading_icon.gif")
         $.ajax({
@@ -81,5 +82,15 @@ function InstallAutoComplete(targetId, words) {
                 return false;
             }
         });
-};
+}
 
+function ajaxActionCall(actionLink) {
+    // Ajax Action Call to actionLink
+    $.ajax({
+        url: actionLink,
+        method: 'GET',
+        success: (data) => {
+            console.log("Result: " + data);
+        }
+    });
+}

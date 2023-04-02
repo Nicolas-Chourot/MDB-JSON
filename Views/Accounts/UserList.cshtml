@@ -27,7 +27,6 @@
             $(".DELETE_USER").click(
                 function () {
                     let userid = this.id.split('_')[1];
-                    ajaxActionCall("@Url.Action("Delete")" + "?userid=" + userid);
                     bootbox.confirm(this.title + ' ?',
                         function () {
                             ajaxActionCall("@Url.Action("Delete")" + "?userid=" + userid);
