@@ -247,7 +247,7 @@ div2 {
 
 .loginJournalLayout {
     display: grid;
-    grid-template-columns: 250px 40px 60px;
+    grid-template-columns: 250px 40px 60px auto;
     align-items: center;
     height: 40px;
 }

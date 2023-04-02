@@ -234,7 +234,7 @@ namespace MDB.Models
                     try
                     {
                         DB.ResetPasswordCommands.Delete(resetPasswordCommand.Id);
-                        return base.Update(user); 
+                        return base.Update(user);
 
                     }
                     catch (Exception ex)
@@ -264,7 +264,14 @@ namespace MDB.Models
                 Login login = new Login();
                 login.LoginDate = login.LogoutDate = DateTime.Now;
                 login.UserId = userId;
-                login.IpAddress = GetClientIPAddress();
+                login.IpAddress = "144.172.187.215"; // GetClientIPAddress();
+                if (login.IpAddress != "::1")
+                {
+                    GeoLocation gl = GeoLocation.Call(login.IpAddress);
+                    login.City = gl.city;
+                    login.RegionName = gl.regionName;
+                    login.CountryCode = gl.countryCode;
+                }
                 login.Id = DB.Logins.Add(login);
                 return login;
             }

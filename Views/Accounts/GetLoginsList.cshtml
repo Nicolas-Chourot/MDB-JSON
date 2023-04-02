@@ -12,7 +12,7 @@
             <hr />
             <div style="display:grid; grid-template-columns:80px 30px; align-items:center">
                 @login.LoginDate.ToShortDateString()
-                @Helper.IconConfirmCmdWithParam("Accounts", "DeleteJournalDay", param,"fa-times-rectangle-o", "Effacer la journée du " + login.LoginDate.ToShortDateString())
+                @Helper.IconConfirmCmdWithParam("Accounts", "DeleteJournalDay", param, "fa-times-rectangle-o", "Effacer la journée du " + login.LoginDate.ToShortDateString())
             </div>
             <hr />
         }
@@ -40,6 +40,18 @@
                     <div title="Session expirée">&nbsp;:&nbsp; @Helper.TimeOutIcon()</div>
                 }
             }
+
+            @if (login.IpAddress != "::1")
+            {
+                <div>
+                    <span>@login.City, @login.RegionName </span> @Helper.CountryFlag(login.CountryCode.ToLower())
+                </div>
+            }
+            else
+                {
+                    <div>&nbsp;</div>
+                }
+
         </div>
     }
 }

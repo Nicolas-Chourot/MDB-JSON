@@ -309,6 +309,7 @@
     <Content Include="App_Data\Distributors.json" />
     <Content Include="App_Data\Genders.json" />
     <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\MoviesRepository - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\imageUploader.js" />
