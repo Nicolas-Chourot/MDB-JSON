@@ -29,44 +29,13 @@ namespace MDB.Models
         [DataType(DataType.MultilineText)]
         public string Synopsis { get; set; }
 
-        public string PosterImageKey { get; set; } = "";
-
-        [JsonIgnore]
         [Display(Name = "Affiche")]
+        public string PosterImageKey { get; set; } = "";
+        #region Poster management
+        [JsonIgnore]
         public string PosterImageData { get; set; }
-
-        [JsonIgnore]
-        public List<Actor> Actors
-        {
-            get
-            {
-                List<Casting> castings = DB.Castings.ToList().Where(c => c.MovieId == Id).ToList();
-                List<Actor> actors = new List<Actor>();
-                foreach (var casting in castings)
-                {
-                    actors.Add(DB.Actors.Get(casting.ActorId));
-                }
-                return actors.OrderBy(c => c.Name).ToList();
-            }
-        }
-        [JsonIgnore]
-        public List<Distributor> Distributors
-        {
-            get
-            {
-                List<Distribution> distributions = DB.Distributions.ToList().Where(c => c.MovieId == Id).ToList();
-                List<Distributor> distributors = new List<Distributor>();
-                foreach (var casting in distributions)
-                {
-                    distributors.Add(DB.Distributors.Get(casting.DistributorId));
-                }
-                return distributors.OrderBy(c => c.Name).ToList();
-            }
-        }
-
         [JsonIgnore]
         private static ImageFileKeyReference PostersRepository = new ImageFileKeyReference(@"/Images_Data/Movie_Posters/", @"no_poster.png");
-
         public string GetPosterURL(bool thumbailFormat = false)
         {
             return PostersRepository.GetURL(PosterImageKey, thumbailFormat);
@@ -78,6 +47,63 @@ namespace MDB.Models
         public void RemovePoster()
         {
             PostersRepository.Remove(PosterImageKey);
+        }
+        #endregion
+
+        [JsonIgnore]
+        public List<Casting> Castings { get { return DB.Castings.ToList().Where(c => c.MovieId == Id).ToList(); } }
+        public void DeleteCastings()
+        {
+            foreach (var casting in Castings)
+                DB.Castings.Delete(casting.Id);
+        }
+        public bool UpdateCastings(List<int> actorsId)
+        {
+            DeleteCastings();
+            if (actorsId != null)
+                foreach (var actorId in actorsId)
+                    DB.Castings.Add(new Casting { ActorId = actorId, MovieId = Id });
+            return true;
+        }
+
+        [JsonIgnore]
+        public List<Actor> Actors
+        {
+            get
+            {
+                List<Actor> actors = new List<Actor>();
+                foreach (var casting in Castings)
+                    actors.Add(casting.Actor);
+                return actors.OrderBy(c => c.Name).ToList();
+            }
+        }
+
+        [JsonIgnore]
+        public List<Distribution> Distributions { get { return DB.Distributions.ToList().Where(c => c.MovieId == Id).ToList(); } }
+        public void DeleteDistributions()
+        {
+            foreach (var distribution in Distributions)
+                DB.Distributions.Delete(distribution.Id);
+        }
+        public bool UpdateDistributions(List<int> distributorsId)
+        {
+            DeleteDistributions();
+            if (distributorsId != null)
+                foreach (var distributorId in distributorsId)
+                    DB.Distributions.Add(new Distribution { DistributorId = distributorId, MovieId = Id });
+            return true;
+        }
+
+        [JsonIgnore]
+        public List<Distributor> Distributors
+        {
+            get
+            {
+                List<Distributor> distributors = new List<Distributor>();
+                foreach (var distribution in Distributions)
+                    distributors.Add(distribution.Distributor);
+                return distributors.OrderBy(c => c.Name).ToList();
+            }
         }
     }
 }

@@ -73,7 +73,7 @@ namespace MDB.Controllers
             if (ModelState.IsValid)
             {
                 DB.Distributors.Update(distributor, SelectedMoviesId);
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new {id = distributor.Id});
             }
             ViewBag.Distributions = SelectListUtilities<Movie>.Convert(distributor.Movies);
             ViewBag.Movies = SelectListUtilities<Movie>.Convert(DB.Movies.ToList());

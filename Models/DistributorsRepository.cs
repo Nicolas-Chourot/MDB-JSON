@@ -11,35 +11,17 @@ namespace MDB.Models
         {
             BeginTransaction();
             distributor.SaveLogo(); // must be done before base.Add() to update actor.AvatarImageKey
-            int distributorId = base.Add(distributor);
-            UpdateDistribution(Get(distributorId), moviesId);
+            base.Add(distributor);
+            distributor.UpdateDistributions(moviesId);
             EndTransaction();
-            return distributorId;
-        }
-        private void UpdateDistribution(Distributor distributor, List<int> moviesId)
-        {
-            DeleteDistributions(distributor);
-            if (moviesId != null && moviesId.Count > 0)
-            {
-                foreach (var movieId in moviesId)
-                {
-                    DB.Distributions.Add(movieId, distributor.Id);
-                }
-            }
-        }
-        private void DeleteDistributions(Distributor distributor)
-        {
-            foreach (var movie in distributor.Movies)
-            {
-                DB.Distributions.Delete(movie.Id, distributor.Id);
-            }
+            return distributor.Id;
         }
         public bool Update(Distributor distributor, List<int> moviesId)
         {
             BeginTransaction();
             distributor.SaveLogo(); // must be done before base.Update() to update actor.AvatarImageKey
             base.Update(distributor);
-            UpdateDistribution(distributor, moviesId);
+            distributor.UpdateDistributions(moviesId);
             EndTransaction();
             return true;
         }
@@ -50,7 +32,7 @@ namespace MDB.Models
             if (distributor != null)
             {
                 distributor.RemoveLogo();
-                DeleteDistributions(distributor);
+                distributor.DeleteDistributions();
                 base.Delete(Id);
             }
             EndTransaction();

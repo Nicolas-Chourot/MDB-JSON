@@ -29,8 +29,8 @@ namespace MDB.Models
         public static MoviesRepository Movies { get; set; }
         public static ActorsRepository Actors { get; set; }
         public static DistributorsRepository Distributors { get; set; }
-        public static CastingsRepository Castings { get; set; }
-        public static DistributionsRepository Distributions { get; set; }
+        public static Repository<Casting> Castings { get; set; }
+        public static Repository<Distribution> Distributions { get; set; }
         #endregion
         #region initialization
         public DB()
@@ -44,8 +44,8 @@ namespace MDB.Models
             Movies = new MoviesRepository();
             Actors = new ActorsRepository();
             Distributors = new DistributorsRepository();
-            Castings = new CastingsRepository();
-            Distributions = new DistributionsRepository();
+            Castings = new Repository<Casting>();
+            Distributions = new Repository<Distribution>();
             InitRepositories(this);
         }     
         private static void InitRepositories(DB db)

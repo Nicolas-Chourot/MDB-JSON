@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.PosterImageData, htmlAttributes: new { @class = "control-label col-md-2 legend" })
+            @Html.LabelFor(model => model.PosterImageKey, htmlAttributes: new { @class = "control-label col-md-2 legend" })
             <div class="col-md-10">
                 @Helper.ImageUploader(Model.Id, "PosterImageData", Model.GetPosterURL(), "~/Images_Data/Loading_icon.gif", "Cliquez pour choisir une image")
                 @Html.ValidationMessageFor(model => model.PosterImageData, "", new { @class = "text-danger" })

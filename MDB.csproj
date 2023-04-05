@@ -134,11 +134,9 @@
     <Compile Include="Models\Actor.cs" />
     <Compile Include="Models\ActorsRepository.cs" />
     <Compile Include="Models\Casting.cs" />
-    <Compile Include="Models\CastingsRepository.cs" />
     <Compile Include="Models\Countries.cs" />
     <Compile Include="Models\DB.cs" />
     <Compile Include="Models\Distribution.cs" />
-    <Compile Include="Models\DistributionsRepository.cs" />
     <Compile Include="Models\Distributor.cs" />
     <Compile Include="Models\DistributorsRepository.cs" />
     <Compile Include="Models\EmailView.cs" />

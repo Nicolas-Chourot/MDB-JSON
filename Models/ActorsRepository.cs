@@ -12,35 +12,18 @@ namespace MDB.Models
         {
             BeginTransaction();
             actor.SaveAvatar(); // must be done before base.Add() to update actor.AvatarImageKey
-            int actorId = base.Add(actor);
-            UpdateCasting(Get(actorId), moviesId);
+            base.Add(actor);
+            actor.UpdateCastings(moviesId);
             EndTransaction();
-            return actorId;
+            return actor.Id;
         }
-        private void UpdateCasting(Actor actor, List<int> moviesId)
-        {
-            DeleteCastings(actor);
-            if (moviesId != null && moviesId.Count > 0)
-            {
-                foreach (var movieId in moviesId)
-                {
-                    DB.Castings.Add(movieId, actor.Id);
-                }
-            }
-        }
-        private void DeleteCastings(Actor actor)
-        {
-            foreach (var movie in actor.Movies)
-            {
-                DB.Castings.Delete(movie.Id, actor.Id);
-            }
-        }
+      
         public bool Update(Actor actor, List<int> moviesId)
         {
             BeginTransaction(); 
             actor.SaveAvatar(); // must be done before base.Update() to update actor.AvatarImageKey
             base.Update(actor);
-            UpdateCasting(actor, moviesId);
+            actor.UpdateCastings(moviesId);
             EndTransaction();
             return true;
         }
@@ -51,7 +34,7 @@ namespace MDB.Models
             if (actor != null)
             {
                 actor.RemoveAvatar();
-                DeleteCastings(actor);
+                actor.DeleteCastings();
                 base.Delete(Id);
             }
             EndTransaction();
