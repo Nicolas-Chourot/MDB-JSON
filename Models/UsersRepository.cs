@@ -311,7 +311,8 @@ namespace MDB.Models
             {
                 BeginTransaction();
                 DateTime dayAfter = day.AddDays(1);
-                IEnumerable<Login> logins = DB.Logins.ToList().Where(l => l.LoginDate >= day && l.LoginDate < dayAfter);
+                List<Login> logins = DB.Logins.ToList().Where(l => l.LoginDate >= day && l.LoginDate < dayAfter).ToList();
+                // Notice: You can delete items of List<T> collection in a foreach loop but it will fail with items of IEnumerable<T> collection
                 foreach (Login login in logins)
                 {
                     DB.Logins.Delete(login.Id);

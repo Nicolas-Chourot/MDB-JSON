@@ -294,15 +294,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Code\Helper.cshtml" />
-    <Content Include="App_Data\Actors.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\Castings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\Movies.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="App_Data\Actors.json" />
+    <Content Include="App_Data\Castings.json" />
+    <Content Include="App_Data\Movies.json" />
     <Content Include="App_Data\Distributions.json" />
     <Content Include="App_Data\Distributors.json" />
     <Content Include="App_Data\Genders.json" />
