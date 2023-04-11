@@ -38,7 +38,19 @@ namespace MDB.Models
             AvatarsRepository.Remove(LogoImageKey);
         }
         #endregion
+        [JsonIgnore]
         public List<Distribution> Distributions { get { return DB.Distributions.ToList().Where(c => c.DistributorId == Id).ToList(); } }
+        [JsonIgnore]
+        public List<Movie> Movies
+        {
+            get
+            {
+                List<Movie> movies = new List<Movie>();
+                foreach (var distribution in Distributions)
+                    movies.Add(distribution.Movie);
+                return movies.OrderBy(c => c.Title).ToList();
+            }
+        }
         public void DeleteDistributions()
         {
             foreach (var distribution in Distributions)
@@ -52,17 +64,5 @@ namespace MDB.Models
                     DB.Distributions.Add(new Distribution { DistributorId = Id, MovieId = movieId });
             return true;
         }
-        [JsonIgnore]
-        public List<Movie> Movies
-        {
-            get
-            {
-                List<Movie> movies = new List<Movie>();
-                foreach (var distribution in Distributions)
-                    movies.Add(distribution.Movie);
-                return movies.OrderBy(c => c.Title).ToList();
-            }
-        }
-
     }
 }

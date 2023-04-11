@@ -38,7 +38,7 @@ namespace MDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                user = DB.Users.Add(user);
+                user = DB.Users.Create(user);
                 if (user != null)
                 {
                     SendEmailVerification(user, user.Email);

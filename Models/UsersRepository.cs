@@ -43,7 +43,7 @@ namespace MDB.Models
                                 .FirstOrDefault();
             return user;
         }
-        public User Add(User user)
+        public User Create(User user)
         {
             try
             {

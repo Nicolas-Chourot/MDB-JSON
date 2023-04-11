@@ -52,20 +52,17 @@ namespace MDB.Models
 
         [JsonIgnore]
         public List<Casting> Castings { get { return DB.Castings.ToList().Where(c => c.MovieId == Id).ToList(); } }
-        public void DeleteCastings()
+        [JsonIgnore]
+        public List<Distributor> Distributors
         {
-            foreach (var casting in Castings)
-                DB.Castings.Delete(casting.Id);
+            get
+            {
+                List<Distributor> distributors = new List<Distributor>();
+                foreach (var distribution in Distributions)
+                    distributors.Add(distribution.Distributor);
+                return distributors.OrderBy(c => c.Name).ToList();
+            }
         }
-        public bool UpdateCastings(List<int> actorsId)
-        {
-            DeleteCastings();
-            if (actorsId != null)
-                foreach (var actorId in actorsId)
-                    DB.Castings.Add(new Casting { ActorId = actorId, MovieId = Id });
-            return true;
-        }
-
         [JsonIgnore]
         public List<Actor> Actors
         {
@@ -77,7 +74,6 @@ namespace MDB.Models
                 return actors.OrderBy(c => c.Name).ToList();
             }
         }
-
         [JsonIgnore]
         public List<Distribution> Distributions { get { return DB.Distributions.ToList().Where(c => c.MovieId == Id).ToList(); } }
         public void DeleteDistributions()
@@ -93,17 +89,18 @@ namespace MDB.Models
                     DB.Distributions.Add(new Distribution { DistributorId = distributorId, MovieId = Id });
             return true;
         }
-
-        [JsonIgnore]
-        public List<Distributor> Distributors
+        public void DeleteCastings()
         {
-            get
-            {
-                List<Distributor> distributors = new List<Distributor>();
-                foreach (var distribution in Distributions)
-                    distributors.Add(distribution.Distributor);
-                return distributors.OrderBy(c => c.Name).ToList();
-            }
+            foreach (var casting in Castings)
+                DB.Castings.Delete(casting.Id);
         }
-    }
+        public bool UpdateCastings(List<int> actorsId)
+        {
+            DeleteCastings();
+            if (actorsId != null)
+                foreach (var actorId in actorsId)
+                    DB.Castings.Add(new Casting { ActorId = actorId, MovieId = Id });
+            return true;
+        }
+     }
 }

@@ -42,6 +42,17 @@ namespace MDB.Models
 
         [JsonIgnore]
         public List<Casting> Castings { get { return DB.Castings.ToList().Where(c => c.ActorId == Id).ToList(); } }
+        [JsonIgnore]
+        public List<Movie> Movies
+        {
+            get
+            {
+                List<Movie> movies = new List<Movie>();
+                foreach (var casting in Castings)
+                    movies.Add(casting.Movie);
+                return movies.OrderBy(c => c.Title).ToList();
+            }
+        }
         public void DeleteCastings()
         {
             foreach (var casting in Castings)
@@ -55,16 +66,6 @@ namespace MDB.Models
                     DB.Castings.Add(new Casting { ActorId = Id, MovieId = movieId });
             return true;
         }
-        [JsonIgnore]
-        public List<Movie> Movies
-        {
-            get
-            {
-                List<Movie> movies = new List<Movie>();
-                foreach (var casting in Castings)
-                    movies.Add(casting.Movie);
-                return movies.OrderBy(c => c.Title).ToList();
-            }
-        }
+       
     }
 }

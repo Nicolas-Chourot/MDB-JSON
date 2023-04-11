@@ -82,24 +82,15 @@ namespace MDB.Models
         #endregion
         #region View members
         [JsonIgnore]
-        public Gender Gender { get { return DB.Genders.Get(GenderId); }}
+        public Gender Gender { get { return DB.Genders.Get(GenderId); } }
         [JsonIgnore]
         public UserType UserType { get { return DB.UserTypes.Get(UserTypeId); } }
         [JsonIgnore]
-        public bool IsPowerUser
-        {
-            get { return UserTypeId <= 2 /* Admin = 1 , PowerUser = 2 */; }
-        }
+        public bool IsPowerUser { get { return UserTypeId <= 2 /* Admin = 1 , PowerUser = 2 */; } }
         [JsonIgnore]
-        public bool IsAdmin
-        {
-            get { return UserTypeId == 1 /* Admin */; }
-        }
+        public bool IsAdmin { get { return UserTypeId == 1 /* Admin */; } }
         [JsonIgnore]
-        public bool CRUD_Access
-        {
-            get { return IsPowerUser; }
-        }
+        public bool CRUD_Access { get { return IsPowerUser; } }
         public string GetFullName(bool showGender = false)
         {
             if (showGender)
