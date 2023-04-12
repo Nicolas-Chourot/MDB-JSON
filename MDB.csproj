@@ -162,12 +162,24 @@
     <Content Include="actors_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\iso-3166.txt" />
-    <Content Include="App_Data\Logins.json" />
-    <Content Include="App_Data\ResetPasswordCommands.json" />
-    <Content Include="App_Data\UnverifiedEmails.json" />
-    <Content Include="App_Data\Users.json" />
-    <None Include="App_Data\UserTypes.json" />
+    <Content Include="App_Data\iso-3166.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Logins.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\ResetPasswordCommands.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\UnverifiedEmails.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Users.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="App_Data\UserTypes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -283,10 +295,7 @@
     <Content Include="Images_Data\No_Image.png" />
     <Content Include="Images_Data\User_Avatars\3fd2ac58-4ec2-4598-9cfb-de28783accd5.Jpeg" />
     <Content Include="Images_Data\User_Avatars\4491ed49-2848-4618-b131-7036cb07126f.Jpeg" />
-    <Content Include="Images_Data\User_Avatars\45172002.jpg" />
-    <Content Include="Images_Data\User_Avatars\69e1c518-0a30-4d3b-8c2d-6015801231ea.Jpeg" />
     <Content Include="Images_Data\User_Avatars\89ca9b58-9e3d-4c21-bb08-369f8f04b2fb.Jpeg" />
-    <Content Include="Images_Data\User_Avatars\ca741c88-5485-452d-825b-517235ddf4de.Jpeg" />
     <Content Include="Images_Data\User_Avatars\no_avatar.png" />
     <Content Include="info-icon.png" />
     <Content Include="Scripts\bootbox.js" />
@@ -294,12 +303,24 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Code\Helper.cshtml" />
-    <Content Include="App_Data\Actors.json" />
-    <Content Include="App_Data\Castings.json" />
-    <Content Include="App_Data\Movies.json" />
-    <Content Include="App_Data\Distributions.json" />
-    <Content Include="App_Data\Distributors.json" />
-    <Content Include="App_Data\Genders.json" />
+    <Content Include="App_Data\Actors.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Castings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Movies.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Distributions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Distributors.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Genders.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\MoviesRepository - Web Deploy.pubxml" />

@@ -233,7 +233,6 @@ namespace MDB.Controllers
             User userToEdit = OnlineUsers.GetSessionUser().Clone();
             if (userToEdit != null)
             {
-                Session["currentUserPassword"] = userToEdit.Password;
                 Session["UnchangedPasswordCode"] = Guid.NewGuid().ToString().Substring(0, 12);
                 userToEdit.Password = userToEdit.ConfirmPassword = (string)Session["UnchangedPasswordCode"];
                 return View(userToEdit);
@@ -250,7 +249,7 @@ namespace MDB.Controllers
             if (ModelState.IsValid)
             {
                 if (user.Password == (string)Session["UnchangedPasswordCode"])
-                    user.Password = user.ConfirmPassword = (string) Session["currentUserPassword"];
+                    user.Password = user.ConfirmPassword = currentUser.Password;
 
                 if (user.Email != currentUser.Email)
                 {
