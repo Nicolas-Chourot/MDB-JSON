@@ -1,4 +1,4 @@
-﻿let EndSessionAction = '/Session/End';
+let EndSessionAction = '/Session/End';
 
 class PartialRefresh {
     constructor(serviceURL, container, refreshRate, postRefreshCallback = null) {
@@ -59,15 +59,19 @@ class PartialRefresh {
         }
     }
 
-    command(url) {
+    command(url, moreCallBack = null) {
         $.ajax({
             url: url,
             method: 'GET',
-            success: () => { this.refresh(true) }
+            success: () => {
+                this.refresh(true);
+                if (moreCallBack != null)
+                    moreCallBack();
+            }
         });
     }
 
-    confirmedCommand(message, url) {
-        bootbox.confirm(message, (result) => { if (result) this.command(url) });
+    confirmedCommand(message, url, moreCallBack = null) {
+        bootbox.confirm(message, (result) => { if (result) this.command(url, moreCallBack) });
     }
 }
