@@ -245,6 +245,13 @@ namespace MDB.Controllers
         public ActionResult Profil(User user)
         {
             User currentUser = OnlineUsers.GetSessionUser();
+            user.Id = currentUser.Id;
+            user.CreationDate = currentUser.CreationDate;
+            user.UserTypeId = currentUser.UserTypeId;
+            user.Verified = currentUser.Verified;
+            user.Blocked = currentUser.Blocked;
+            user.Avatar = currentUser.Avatar;
+            
             string newEmail = "";
             if (ModelState.IsValid)
             {

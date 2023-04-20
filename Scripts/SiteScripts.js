@@ -84,13 +84,14 @@ function InstallAutoComplete(targetId, words) {
         });
 }
 
-function ajaxActionCall(actionLink) {
+function ajaxActionCall(actionLink, callback = null) {
     // Ajax Action Call to actionLink
     $.ajax({
         url: actionLink,
         method: 'GET',
         success: (data) => {
             console.log("Result: " + data);
+            if (callback != null) callback();
         }
     });
 }
