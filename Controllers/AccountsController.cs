@@ -28,7 +28,6 @@ namespace MDB.Controllers
         {
             ViewBag.Genders = SelectListUtilities<Gender>.Convert(DB.Genders.ToList());
             User user = new User();
-            user.UserTypeId = 3; // self subscribed user 
             return View(user);
         }
 
@@ -36,6 +35,11 @@ namespace MDB.Controllers
         [ValidateAntiForgeryToken()]
         public ActionResult Subscribe(User user)
         {
+            user.CreationDate = DateTime.Now;
+            user.UserTypeId = 3; // self subscribed user 
+            user.Verified = false;
+            user.Blocked = false;
+
             if (ModelState.IsValid)
             {
                 user = DB.Users.Create(user);
