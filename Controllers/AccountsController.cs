@@ -150,7 +150,7 @@ namespace MDB.Controllers
                     Body += Link;
                     Body += @"<br/><br/>Ce courriel a été généré automatiquement, veuillez ne pas y répondre.";
                     Body += @"<br/><br/>Si vous éprouvez des difficultés ou s'il s'agit d'une erreur, veuillez le signaler à <a href='mailto:"
-                         + SMTP.OwnerEmail + "'>" + SMTP.OwnerName + "</a> (Webmestre du site [nom de l'application])";
+                         + SMTP.OwnerEmail + "'>" + SMTP.OwnerName + "</a> (Webmestre du site MDB)";
 
                     SMTP.SendEmail(user.GetFullName(), unverifiedEmail.Email, Subject, Body);
                 }
