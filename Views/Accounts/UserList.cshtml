@@ -13,7 +13,6 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script defer>
-        PartialRefresh.setEndSessionAction("@Url.Action("End","Session")");
         let GetUsersList = new PartialRefresh("@Url.Action("GetUsersList")", "UsersListContainer", 5, UpdateCheckboxChangeCallback);
 
         function UpdateCheckboxChangeCallback() {
