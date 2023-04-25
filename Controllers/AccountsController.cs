@@ -73,22 +73,22 @@ namespace MDB.Controllers
                 if (unverifiedEmail != null)
                 {
                     string verificationUrl = Url.Action("VerifyUser", "Accounts", null, Request.Url.Scheme);
-                    String Link = @"<br/><a href='" + verificationUrl + "?userid=" + user.Id + "&code=" + unverifiedEmail.VerificationCode + @"' > Confirmez votre inscription...</a>";
+                    String Link = @"<br/><a href='" + verificationUrl + "?code=" + unverifiedEmail.VerificationCode + @"' > Confirmez votre inscription...</a>";
 
                     String suffixe = "";
                     if (user.GenderId == 2)
                     {
                         suffixe = "e";
                     }
-                    string Subject = "MDB - Vérification d'inscription...";
+                    string Subject = "ChatManager - Vérification d'inscription...";
 
                     string Body = "Bonjour " + user.GetFullName(true) + @",<br/><br/>";
-                    Body += @"Merci de vous être inscrit" + suffixe + " au site MDB. <br/>";
+                    Body += @"Merci de vous être inscrit" + suffixe + " au site ChatManager. <br/>";
                     Body += @"Pour utiliser votre compte vous devez confirmer votre inscription en cliquant sur le lien suivant : <br/>";
                     Body += Link;
                     Body += @"<br/><br/>Ce courriel a été généré automatiquement, veuillez ne pas y répondre.";
                     Body += @"<br/><br/>Si vous éprouvez des difficultés ou s'il s'agit d'une erreur, veuillez le signaler à <a href='mailto:"
-                         + SMTP.OwnerEmail + "'>" + SMTP.OwnerName + "</a> (Webmestre du site MDB)";
+                         + SMTP.OwnerEmail + "'>" + SMTP.OwnerName + "</a> (Webmestre du site ChatManager)";
 
                     SMTP.SendEmail(user.GetFullName(), unverifiedEmail.Email, Subject, Body);
                 }
@@ -109,18 +109,23 @@ namespace MDB.Controllers
         {
             return View();
         }
-        public ActionResult VerifyUser(int userid, int code)
+        public ActionResult VerifyUser(string code)
         {
-            User newlySubscribedUser = DB.Users.Get(userid);
-            if (newlySubscribedUser != null)
+            UnverifiedEmail UnverifiedEmail = DB.Users.FindUnverifiedEmail(code);
+            if (UnverifiedEmail != null)
             {
-                if (!DB.Users.HaveUnverifiedEmail(userid, code))
+                User newlySubscribedUser = DB.Users.Get(UnverifiedEmail.UserId);
+
+                if (newlySubscribedUser != null)
                 {
                     if (DB.Users.EmailVerified(newlySubscribedUser.Email))
                         return RedirectToAction("AlreadyVerified");
+
+                    if (DB.Users.Verify_User(newlySubscribedUser.Id, code))
+                        return RedirectToAction("VerifyDone/" + newlySubscribedUser.Id);
                 }
-                if (DB.Users.Verify_User(userid, code))
-                    return RedirectToAction("VerifyDone/" + userid);
+                else
+                    RedirectToAction("VerifyError");
             }
             return RedirectToAction("VerifyError");
         }
@@ -140,9 +145,9 @@ namespace MDB.Controllers
                 if (unverifiedEmail != null)
                 {
                     string verificationUrl = Url.Action("VerifyUser", "Accounts", null, Request.Url.Scheme);
-                    String Link = @"<br/><a href='" + verificationUrl + "?userid=" + user.Id + "&code=" + unverifiedEmail.VerificationCode + @"' > Confirmez votre adresse...</a>";
+                    String Link = @"<br/><a href='" + verificationUrl + "?code=" + unverifiedEmail.VerificationCode + @"' > Confirmez votre adresse...</a>";
 
-                    string Subject = "MDB - Vérification de courriel...";
+                    string Subject = "ChatManager - Vérification de courriel...";
 
                     string Body = "Bonjour " + user.GetFullName(true) + @",<br/><br/>";
                     Body += @"Vous avez modifié votre adresse de courriel. <br/>";
@@ -150,7 +155,7 @@ namespace MDB.Controllers
                     Body += Link;
                     Body += @"<br/><br/>Ce courriel a été généré automatiquement, veuillez ne pas y répondre.";
                     Body += @"<br/><br/>Si vous éprouvez des difficultés ou s'il s'agit d'une erreur, veuillez le signaler à <a href='mailto:"
-                         + SMTP.OwnerEmail + "'>" + SMTP.OwnerName + "</a> (Webmestre du site MDB)";
+                         + SMTP.OwnerEmail + "'>" + SMTP.OwnerName + "</a> (Webmestre du site ChatManager)";
 
                     SMTP.SendEmail(user.GetFullName(), unverifiedEmail.Email, Subject, Body);
                 }
@@ -180,9 +185,9 @@ namespace MDB.Controllers
             {
                 User user = DB.Users.Get(resetPasswordCommand.UserId);
                 string verificationUrl = Url.Action("ResetPassword", "Accounts", null, Request.Url.Scheme);
-                String Link = @"<br/><a href='" + verificationUrl + "?userid=" + user.Id + "&code=" + resetPasswordCommand.VerificationCode + @"' > Réinitialisation de mot de passe...</a>";
+                String Link = @"<br/><a href='" + verificationUrl + "?code=" + resetPasswordCommand.VerificationCode + @"' > Réinitialisation de mot de passe...</a>";
 
-                string Subject = "MDB - Réinitialisaton ...";
+                string Subject = "ChatManager - Réinitialisaton ...";
 
                 string Body = "Bonjour " + user.GetFullName(true) + @",<br/><br/>";
                 Body += @"Vous avez demandé de réinitialiser votre mot de passe. <br/>";
@@ -195,11 +200,11 @@ namespace MDB.Controllers
                 SMTP.SendEmail(user.GetFullName(), user.Email, Subject, Body);
             }
         }
-        public ActionResult ResetPassword(int userid, int code)
+        public ActionResult ResetPassword(string code)
         {
-            ResetPasswordCommand resetPasswordCommand = DB.Users.Find_ResetPasswordCommand(userid, code);
+            ResetPasswordCommand resetPasswordCommand = DB.Users.Find_ResetPasswordCommand(code);
             if (resetPasswordCommand != null)
-                return View(new PasswordView() { UserId = userid });
+                return View(new PasswordView() { Code = code });
             return RedirectToAction("ResetPasswordError");
         }
         [HttpPost]
@@ -208,8 +213,14 @@ namespace MDB.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (DB.Users.ResetPassword(passwordView.UserId, passwordView.Password))
-                    return RedirectToAction("ResetPasswordSuccess");
+                ResetPasswordCommand resetPasswordCommand = DB.Users.Find_ResetPasswordCommand(passwordView.Code);
+                if (resetPasswordCommand != null)
+                {
+                    if (DB.Users.ResetPassword(resetPasswordCommand.UserId, passwordView.Password))
+                        return RedirectToAction("ResetPasswordSuccess");
+                    else
+                        return RedirectToAction("ResetPasswordError");
+                }
                 else
                     return RedirectToAction("ResetPasswordError");
             }

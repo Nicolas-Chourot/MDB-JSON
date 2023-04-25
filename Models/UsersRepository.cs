@@ -102,10 +102,12 @@ namespace MDB.Models
         {
             try
             {
-                BeginTransaction();
+
                 User userToDelete = DB.Users.Get(userId);
                 if (userToDelete != null)
                 {
+                    BeginTransaction();
+
                     RemoveLogins(userId);
                     RemoveUnverifiedEmails(userId);
                     RemoveResetPasswordCommands(userId);
@@ -113,9 +115,11 @@ namespace MDB.Models
                     base.Delete(userId);
                     OnlineUsers.RemoveUser(userToDelete.Id);
                     OnlineUsers.SetHasChanged();
+
+                    EndTransaction();
                     return true;
                 }
-                EndTransaction();
+
                 return false;
             }
             catch (Exception ex)
@@ -147,7 +151,7 @@ namespace MDB.Models
         {
             return ToList().OrderBy(u => u.FirstName).ThenBy(u => u.LastName);
         }
-        public bool Verify_User(int userId, int code)
+        public bool Verify_User(int userId, string code)
         {
             User user = Get(userId);
             if (user != null)
@@ -183,19 +187,23 @@ namespace MDB.Models
         {
             try
             {
-                UnverifiedEmail unverifiedEmail = new UnverifiedEmail() { UserId = userId, Email = email, VerificationCode = DateTime.Now.Millisecond };
+                BeginTransaction();
+                RemoveUnverifiedEmails(userId);
+                UnverifiedEmail unverifiedEmail = new UnverifiedEmail() { UserId = userId, Email = email, VerificationCode = Guid.NewGuid().ToString() };
                 unverifiedEmail.Id = DB.UnverifiedEmails.Add(unverifiedEmail);
+                EndTransaction();
                 return unverifiedEmail;
             }
             catch (Exception ex)
             {
+                EndTransaction();
                 System.Diagnostics.Debug.WriteLine($"Add_UnverifiedEmail failed : Message - {ex.Message}");
                 return null;
             }
         }
-        public bool HaveUnverifiedEmail(int userId, int code)
+        public UnverifiedEmail FindUnverifiedEmail(string code)
         {
-            return DB.UnverifiedEmails.ToList().Where(u => (u.UserId == userId && u.VerificationCode == code)).FirstOrDefault() != null;
+            return DB.UnverifiedEmails.ToList().Where(u => (u.VerificationCode == code)).FirstOrDefault();
         }
         public ResetPasswordCommand Add_ResetPasswordCommand(string email)
         {
@@ -204,23 +212,27 @@ namespace MDB.Models
                 User user = DB.Users.ToList().Where(u => u.Email == email).FirstOrDefault();
                 if (user != null)
                 {
+                    BeginTransaction();
+                    RemoveResetPasswordCommands(user.Id); // Flush previous request
                     ResetPasswordCommand resetPasswordCommand =
-                        new ResetPasswordCommand() { UserId = user.Id, VerificationCode = DateTime.Now.Millisecond };
+                        new ResetPasswordCommand() { UserId = user.Id, VerificationCode = Guid.NewGuid().ToString() };
 
                     resetPasswordCommand.Id = DB.ResetPasswordCommands.Add(resetPasswordCommand);
+                    EndTransaction();
                     return resetPasswordCommand;
                 }
                 return null;
             }
             catch (Exception ex)
             {
+                EndTransaction();
                 System.Diagnostics.Debug.WriteLine($"Add_ResetPasswordCommand failed : Message - {ex.Message}");
                 return null;
             }
         }
-        public ResetPasswordCommand Find_ResetPasswordCommand(int userid, int verificationCode)
+        public ResetPasswordCommand Find_ResetPasswordCommand(string verificationCode)
         {
-            return DB.ResetPasswordCommands.ToList().Where(r => (r.UserId == userid && r.VerificationCode == verificationCode)).FirstOrDefault();
+            return DB.ResetPasswordCommands.ToList().Where(r => (r.VerificationCode == verificationCode)).FirstOrDefault();
         }
         public bool ResetPassword(int userId, string password)
         {
@@ -228,19 +240,18 @@ namespace MDB.Models
             if (user != null)
             {
                 user.Password = user.ConfirmPassword = password;
-                ResetPasswordCommand resetPasswordCommand = DB.ResetPasswordCommands.ToList().Where(r => r.UserId == userId).FirstOrDefault();
-                if (resetPasswordCommand != null)
+                try
                 {
-                    try
-                    {
-                        DB.ResetPasswordCommands.Delete(resetPasswordCommand.Id);
-                        return base.Update(user);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"ResetPassword failed : Message - {ex.Message}");
-                    }
+                    BeginTransaction();
+                    RemoveResetPasswordCommands(user.Id);
+                    var result = base.Update(user);
+                    EndTransaction();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    EndTransaction();
+                    System.Diagnostics.Debug.WriteLine($"ResetPassword failed : Message - {ex.Message}");
                 }
             }
             return false;
