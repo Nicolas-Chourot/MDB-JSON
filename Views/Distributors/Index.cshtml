@@ -18,7 +18,6 @@
 </div>
 @section Scripts {
     <script defer>
-        PartialRefresh.setEndSessionAction("@Url.Action("End","Session")");
         let Distributors = new PartialRefresh("@Url.Action("Distributors", "Distributors")", "DistributorsContainer", 5);
     </script>
 }

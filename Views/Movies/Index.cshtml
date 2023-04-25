@@ -18,7 +18,6 @@
 
 @section Scripts {
     <script defer>
-        PartialRefresh.setEndSessionAction("@Url.Action("End","Session")");
         let movies = new PartialRefresh("@Url.Action("Movies")", "MoviesContainer", 5);
     </script>
 }
