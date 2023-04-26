@@ -162,6 +162,17 @@
     <Content Include="actors_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Data\Actors.json" />
+    <Content Include="App_Data\Castings.json" />
+    <Content Include="App_Data\Distributions.json" />
+    <Content Include="App_Data\Distributors.json" />
+    <Content Include="App_Data\Genders.json" />
+    <Content Include="App_Data\iso-3166.txt" />
+    <Content Include="App_Data\Logins.json" />
+    <Content Include="App_Data\Movies.json" />
+    <Content Include="App_Data\ResetPasswordCommands.json" />
+    <Content Include="App_Data\UnverifiedEmails.json" />
+    <Content Include="App_Data\Users.json" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -285,6 +296,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Code\Helper.cshtml" />
+    <Content Include="App_Data\UserTypes.json" />
     <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MDB2023 - Web Deploy1.pubxml" />
     <None Include="Properties\PublishProfiles\MoviesRepository - Web Deploy.pubxml" />
@@ -355,6 +367,8 @@
     <Content Include="Views\Accounts\UserList.cshtml" />
     <Content Include="Views\Accounts\VerifyDone.cshtml" />
     <Content Include="Views\Accounts\VerifyError.cshtml" />
+    <Content Include="Views\Accounts\EmailChanged.cshtml" />
+    <Content Include="Views\Accounts\EmailChangedError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\CountryFlag\" />

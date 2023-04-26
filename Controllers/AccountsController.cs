@@ -137,6 +137,22 @@ namespace MDB.Controllers
             OnlineUsers.RemoveSessionUser();
             return View();
         }
+        public ActionResult CommitEmailChange(string code)
+        {
+            if (DB.Users.ChangeEmail(code))
+            {
+                return RedirectToAction("EmailChanged");
+            }
+            return RedirectToAction("EmailChangedError");
+        }
+        public ActionResult EmailChanged()
+        {
+            return View();
+        }
+        public ActionResult EmailChangedError()
+        {
+            return View();
+        }
         public void SendEmailChangedVerification(User user, string newEmail)
         {
             if (user.Id != 0)
@@ -144,10 +160,10 @@ namespace MDB.Controllers
                 UnverifiedEmail unverifiedEmail = DB.Users.Add_UnverifiedEmail(user.Id, newEmail);
                 if (unverifiedEmail != null)
                 {
-                    string verificationUrl = Url.Action("VerifyUser", "Accounts", null, Request.Url.Scheme);
+                    string verificationUrl = Url.Action("CommitEmailChange", "Accounts", null, Request.Url.Scheme);
                     String Link = @"<br/><a href='" + verificationUrl + "?code=" + unverifiedEmail.VerificationCode + @"' > Confirmez votre adresse...</a>";
 
-                    string Subject = "ChatManager - Vérification de courriel...";
+                    string Subject = "ChatManager - Confirmation de changement de courriel...";
 
                     string Body = "Bonjour " + user.GetFullName(true) + @",<br/><br/>";
                     Body += @"Vous avez modifié votre adresse de courriel. <br/>";

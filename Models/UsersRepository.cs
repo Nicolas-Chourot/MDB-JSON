@@ -183,6 +183,36 @@ namespace MDB.Models
             }
             return false;
         }
+        public bool ChangeEmail(string code)
+        {
+            UnverifiedEmail unverifiedEmail = FindUnverifiedEmail(code);
+
+            if (unverifiedEmail != null)
+            {
+                User user = Get(unverifiedEmail.UserId);
+
+                if (user != null)
+                {
+                    try
+                    {
+                        BeginTransaction();
+                        user.Email = user.ConfirmEmail = unverifiedEmail.Email;
+                        user.Verified = true;
+                        base.Update(user);
+                        DB.UnverifiedEmails.Delete(unverifiedEmail.Id);
+                        OnlineUsers.SetHasChanged();
+                        EndTransaction();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Verify_User failed : Message - {ex.Message}");
+                        EndTransaction();
+                    }
+                }
+            }
+            return false;
+        }
         public UnverifiedEmail Add_UnverifiedEmail(int userId, string email)
         {
             try
